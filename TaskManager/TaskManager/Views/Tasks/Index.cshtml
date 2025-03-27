@@ -1,0 +1,65 @@
+﻿@model IEnumerable<TaskManager.Models.Task>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    .overdue {
+        color: red !important;
+    }</style>
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TaskName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Details)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TaskStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            bool isOverdue = item.DueDate < DateTime.Now;
+
+            <tr class=" @(item.DueDate.Date < DateTime.Now ? "overdue": "")">
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Details)
+                </td>
+                <td class="@(isOverdue ? "overdue" : "")">
+                    @item.DueDate.ToString("yyyy/MM/dd HH:mm:ss")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskStatus)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TaskID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.TaskID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TaskID">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
